@@ -46,7 +46,7 @@ def main():
 		assert num == monetas(data, 5)
 		print('ok')
 
-	print(monetas('ckczppom', 5))
+	print(monetas('ckczppom', 6))
 
 if __name__ == '__main__':
 	main()
