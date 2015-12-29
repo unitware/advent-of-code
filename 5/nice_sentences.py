@@ -24,83 +24,78 @@ jchzalrnumimnmhp is naughty because it has no double letter.
 haegwjzuvuyypxyu is naughty because it contains the string xy.
 dvszwmarrgswjxmb is naughty because it contains only one vowel.
 How many strings are nice?
+
+
+-----
+step 2
+
+Realizing the error of his ways, Santa has switched to a better model of determining whether a string is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.
+
+Now, a nice string is one with all of the following properties:
+
+It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
+It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
+For example:
+
+qjhvhtzxzqqjkmpb is nice because is has a pair that appears twice (qj) and a letter that repeats with exactly one letter between them (zxz).
+xxyxx is nice because it has a pair that appears twice and a letter that repeats with one between, even though the letters used by each rule overlap.
+uurcxstgmygtbstg is naughty because it has a pair (tg) but no repeat with a single letter between them.
+ieodomkazucvgmuy is naughty because it has a repeating letter with one between (odo), but no pair that appears twice.
+How many strings are nice under these new rules?
+
 '''
 
-import hashlib
-
 EXAMPLES = [
-        ('ugknbfddgicrmopn', True), 
-        ('aaa', True),
-        ('jchzalrnumimnmhp', False),
-        ('haegwjzuvuyypxyu', False),
-        ('dvszwmarrgswjxmb', False)
+        ('qjhvhtzxzqqjkmpb', True),
+        ('xxyxx', True),
+        ('uurcxstgmygtbstg', False),
+        ('ieodomkazucvgmuy', False)
     ]
 
-def it_contains_at_least_three_vowels(sentence):
+
+
+def it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice(sentence):
     '''
-    aeiou only
-    >>> it_contains_at_least_three_vowels('abc')
+    >>> it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice('xyxy')
+    True
+    >>> it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice('aabcdefgaa')
+    True
+    >>> it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice('aaa')
     False
-    >>> it_contains_at_least_three_vowels('aei')
-    True
-    >>> it_contains_at_least_three_vowels('aai')
-    True
-    >>> it_contains_at_least_three_vowels('aaa')
-    True
-    >>> it_contains_at_least_three_vowels('aou')
-    True
-    '''
-    vows = 0
-    for vowel in 'aeiou':
-        vows += sentence.count(vowel)
-
-    return vows >= 3
-
-
-def it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row(sentence):
-    '''
-    >>> it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row('abc')
+    >>> it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice('ieodomkazucvgmuy')
     False
-    >>> it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row('abbc')
-    True
-    >>> it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row('abcc')
-    True
-    >>> it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row('aabc')
-    True
     '''
-    for i in range(len(sentence) - 1):
-        if sentence[i] == sentence[i+1]:
+    for i in range(len(sentence) - 3):
+        if sentence[i+2:].count(sentence[i:i+2]):
+            # print(i, sentence[i:i+2], sentence[i+2:])
             return True
 
     return False
 
-
-def it_does_contain_any_of_the_strings_ab_cd_pq_or_xy(sentence):
+def it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between(sentence):
     '''
-    >>> it_does_contain_any_of_the_strings_ab_cd_pq_or_xy('aaa')
+    >>> it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between('xyx')
+    True
+    >>> it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between('abcdefeghi')
+    True
+    >>> it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between('aaa')
+    True
+    >>> it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between('abc')
     False
-    >>> it_does_contain_any_of_the_strings_ab_cd_pq_or_xy('abc')
-    True
-    >>> it_does_contain_any_of_the_strings_ab_cd_pq_or_xy('acd')
-    True
     '''
-    for pattern in ['ab', 'cd', 'pq', 'xy']:
-        if pattern in sentence:
+    for i in range(len(sentence) - 2):
+        if sentence[i] == sentence[i+2]:
             return True
 
     return False
-
 
 def sentence_is_nice(sentence):
-    nice = False
-    if it_contains_at_least_three_vowels(sentence) and \
-       it_contains_at_leas_one_letter_that_is_repeated_twice_in_a_row(sentence):
-       nice = True
-       
-    if it_does_contain_any_of_the_strings_ab_cd_pq_or_xy(sentence):
-        nice = False
+    if it_contains_a_pair_of_any_two_letters_that_appears_at_least_twice(sentence) \
+       and it_contains_at_least_one_letter_which_repeats_with_exactly_one_letter_between(sentence):
+        return True
 
-    return nice
+    return False
+
 
 def main():
     for data, nice in EXAMPLES:
