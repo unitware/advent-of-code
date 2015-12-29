@@ -45,6 +45,8 @@ How many strings are nice under these new rules?
 
 '''
 
+import doctest
+
 EXAMPLES = [
         ('qjhvhtzxzqqjkmpb', True),
         ('xxyxx', True),
@@ -98,6 +100,8 @@ def sentence_is_nice(sentence):
 
 
 def main():
+    doctest.testmod()
+    
     for data, nice in EXAMPLES:
         assert nice == sentence_is_nice(data)
         print('ok')
