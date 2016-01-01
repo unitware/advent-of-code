@@ -28,24 +28,25 @@ After following the instructions, how many lights are lit?
 import doctest
 
 EXAMPLES = [
-        ('turn on 0,0 through 999,999', 1000*1000),
-        ('toggle 0,0 through 999,0', 1000),
-        ('turn off 499,499 through 500,500', 0)
+        ('turn on 0,0 through 0,0', 1),
+        ('toggle 0,0 through 999,999', 2000000)
     ]
 
 
 class light:
     def __init__(self):
-        self.state = False
+        self.state = 0
 
     def turn_on(self):
-        self.state = True 
+        self.state += 1 
 
     def turn_off(self):
-        self.state = False
+        if self.state > 0:
+            self.state -= 1
+
 
     def toggle(self):
-        self.state = not self.state
+        self.state += 2
 
     def __str__(self):
         return str(self.state)
@@ -60,7 +61,7 @@ class light_array:
     def __init__(self, n=1000):
         '''
         >>> light_array(2).array
-        [[False, False], [False, False]]
+        [[0, 0], [0, 0]]
         '''
         self.array = []
         for y in range(n):
@@ -101,63 +102,17 @@ class light_array:
         cnt = 0
         for x in self.array:
             for y in x:
-                if y.state:
-                    cnt += 1
+                cnt += y.state
+
         return cnt
 
 
-    # def turn_on(self, start, stop):
-    #     '''
-    #     >>> array = light_array(3); array.turn_on((1,1), (2,2)); array.array
-    #     [[False, False, False], [False, True, True], [False, True, True]]
-    #     >>> array = light_array(3); array.turn_on((1,1), (1,1)); array.array
-    #     [[False, False, False], [False, True, False], [False, False, False]]
-    #     '''
-    #     x1, y1 = start
-    #     x2, y2 = stop
-    #     for x in range(x1, x2+1):
-    #         for y in range(y1, y2+1):
-    #             self.array[y][x] = True
-
-
-    # def turn_off(array, start, stop):
-    #     '''
-    #     >>> array = create_array(2); turn_on(array, (1,1), (1,1));  turn_off(array, (1,1), (1,1)); array
-    #     [[False, False], [False, False]]
-    #     '''
-    #     x1, y1 = start
-    #     x2, y2 = stop
-    #     for x in range(x1, x2+1):
-    #         for y in range(y1, y2+1):
-    #             array[y][x] = False
-
-
-    # def toggle(array, start, stop):
-    #     '''
-    #     >>> array = create_array(2); turn_on(array, (1,1), (1,1));  toggle(array, (0,1), (1,1)); array
-    #     [[False, False], [True, False]]
-    #     >>> array = create_array(2); toggle(array, (1,1), (1,1)); array
-    #     [[False, False], [False, True]]
-    #     '''
-    #     x1, y1 = start
-    #     x2, y2 = stop
-    #     for x in range(x1, x2+1):
-    #         for y in range(y1, y2+1):
-    #             array[y][x] = not array[y][x]
-
-
-# def do_cmd(array, cmd, start, stop):
-#     for cmd_string, fn in [('turn on', turn_on), 
-#                     ('turn off', turn_off),
-#                     ('toggle', toggle)]:
-#         if cmd == cmd_string:
-#             fn(array, start, stop)
     def execute_command(self, command):
         '''
         >>> array = light_array(2); array.execute_command('turn on 1,1 through 1,1'); array.execute_command('toggle 0,1 through 1,1'); array.array
-        [[False, False], [True, False]]
+        [[0, 0], [2, 3]]
         >>> array = light_array(2); array.execute_command('toggle 1,1 through 1,1');  array.array
-        [[False, False], [False, True]]
+        [[0, 0], [0, 2]]
         '''
         cmd, start, stop = self._split_command(command)
         x1, y1 = start
@@ -185,7 +140,7 @@ def main():
 
     cnt = array.count_lights()
     print(cnt)
-    assert cnt == 400410
+    assert cnt == 15343601
 
 
 if __name__ == '__main__':
