@@ -17,5 +17,5 @@ pipenv run ptw 2018/ -- --doctest-modules
 
 Run
 ```
-pipenv run python 2018/1/assignment.py
+pipenv run python 2018/1/assignment1.py
 ```
