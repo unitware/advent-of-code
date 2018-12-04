@@ -153,14 +153,13 @@ def transform(piece):
 
 def main():
     pieces = get_input()
-    pieces = list(map(transform, pieces))
 
     f = Fabric(1000,1000)
-    for idn, pos, size in pieces:
+    for idn, pos, size in map(transform, pieces):
         f.add(pos, size)
     print(f.count())
 
-    for idn, pos, size in pieces:
+    for idn, pos, size in map(transform, pieces):
         if not f.is_overlapping(pos, size):
             print(idn)
 
