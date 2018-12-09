@@ -49,12 +49,11 @@ Here are a few more examples:
 30 players; last marble is worth 5807 points: high score is 37305
 What is the winning Elf's score?
 '''
-
-PART_A = '405 players; last marble is worth 71700 points'
+import blist
 
 class MarbleMania():
     '''
-    >>> MarbleMania(9).play_game(25, do_print=True)
+    >>> MarbleMania(9).play_game_and_print(25)
     [0] (0)
     [1]  0 (1)
     [2]  0 (2) 1
@@ -106,6 +105,10 @@ class MarbleMania():
     #PART_A = '405 players; last marble is worth 71700 points'
     >>> MarbleMania(405).play_game(71700)
     428690
+
+    #PART_B = '405 players; last marble is worth 7170000 points'
+    >>> MarbleMania(405).play_game(7170000)
+    3628143500
     '''
 
     def __init__(self, num_players):
@@ -113,7 +116,7 @@ class MarbleMania():
         self.player = 0
         self.current = 0
         self.current_pos = 0
-        self.marbles = [0]
+        self.marbles = blist.blist([0])
         self.players = [0 for _ in range(num_players)]
 
     def next_round(self):
@@ -150,13 +153,16 @@ class MarbleMania():
         print(s.strip())
         return self
 
-    def play_game(self, num_rounds, do_print=False):
+    def play_game(self, num_rounds):
         for i in range(num_rounds):
-            if do_print:
-                self.print()
             self.next_round()
-        if do_print:
+        return self.winner_score()
+
+    def play_game_and_print(self, num_rounds):
+        for i in range(num_rounds):
             self.print()
+            self.next_round()
+        self.print()
         return self.winner_score()
 
     def winner_score(self):

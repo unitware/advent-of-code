@@ -9,6 +9,7 @@ name = "pypi"
 pytest = "*"
 pywatch = "*"
 pytest-watch = "*"
+blist = "*"
 
 [requires]
 python_version = "3.7"
